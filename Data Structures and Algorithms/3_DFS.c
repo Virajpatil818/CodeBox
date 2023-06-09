@@ -1,77 +1,58 @@
-#include<stdio.h>
+#include <stdio.h>
+#define n 3
+int a[n][n];
+int visited[n];
+int stack[20];
+int top=-1;
 
- int a[20][20], reach[20], n;
+void DFS(int v){
+    visited[v]=1;
+    
+   for(int i=0;i<n;i++){ 
+    if(a[v][i]==1 && !visited[i]){
+        top++;
+        stack[top]=i;
+        DFS(i);
+        break;
+       }
+    }
+     while(top!=-1){
+         for(int i=0;i<n;i++){
+             if(a[stack[top]][i]==1 && !visited[i]){
+                
+                 DFS(i);
+             }
+             else{
+                 pop();
+             }
+         }
+     }
+        printf("%d ",v);
+}
 
-void
-dfs (int v)
+void pop(){
+    top--;
+}
+void  main()
 {
-  
-int i;
-  
-reach[v] = 1;
-  
-for (i = 1; i <= n; i++)
+    int v;
+    printf("Enter the graph\n");
     
-if (a[v][i] && !reach[i])
-      {
-	
-printf ("\n %d->%d", v, i);
-	
-dfs (i);
-      
+    for(int i=0;i<n;i++){
+        
+        for(int j=0;j<n;j++){
+            scanf("%d",&a[i][j]);
+        }
+    }
+    for(int i=0;i<n;i++){
+        visited[i]=0;
+    }
+    printf("Enter the starting vertex of graph\n");
+    scanf("%d",&v);
+    printf("The DFS Traversal is :-\n");
+    top++;
+    stack[top]=v;
+    DFS(v);
 }
 
-}
 
-
- 
-void
-main ()
-{
-  
-int i, j, count = 0;
-  
-printf ("\n Enter number of vertices:");
-  
-scanf ("%d", &n);
-  
-for (i = 1; i <= n; i++)
-    {
-      
-reach[i] = 0;
-      
-for (j = 1; j <= n; j++)
-	
-a[i][j] = 0;
-    
-}
-  
-printf ("\n Enter the adjacency matrix:\n");
-  
-for (i = 1; i <= n; i++)
-    
-for (j = 1; j <= n; j++)
-      
-scanf ("%d", &a[i][j]);
-  
-dfs (1);
-  
-printf ("\n");
-  
-for (i = 1; i <= n; i++)
-    {
-      
-if (reach[i])
-	
-count++;
-    
-}
-  
-if (count == n)
-    
-printf ("\n Graph is connected");
-  else
-    
-printf ("\n Graph is not connected");
-
-}
