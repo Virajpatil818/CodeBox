@@ -1,193 +1,89 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-int a[20];
 
- 
-void queen (int);
+#define MAX_QUEENS 20
 
- 
-int place (int);
+int positions[MAX_QUEENS];
 
- 
-void print_sol (int);
+// Function prototypes
+void placeQueens(int);
+int isValidPosition(int);
+void printSolution(int);
 
- 
-int 
-place (int pos) 
+// Check if placing a queen at a given position is valid
+int isValidPosition(int pos)
 {
-  
- 
-int i;
-  
- 
-for (int i = 1; i < pos; i++)
-    
- 
+    for (int i = 1; i < pos; i++)
     {
-      
- 
-if (a[pos] == a[i] || ((abs (a[i] - a[pos]) == abs (i - pos))))
-	
- 
-return 0;
-    
- 
-}
-  
- 
-return 1;
+        // Check if there is a conflict with previously placed queens
+        if (positions[pos] == positions[i] || abs(positions[i] - positions[pos]) == abs(i - pos))
+            return 0; // Invalid position
+    }
 
- 
+    return 1; // Valid position
 }
 
-
- 
- 
-void 
-print_sol (int n) 
+// Print the solution (chessboard with queens placed)
+void printSolution(int n)
 {
-  
- 
-printf ("\n***solution***\n");
-  
- 
-for (int i = 1; i <= n; i++)
-    
- 
+    printf("\n*** Solution ***\n");
+
+    for (int i = 1; i <= n; i++)
     {
-      
- 
-for (int j = 1; j <= n; j++)
-	
- 
-	{
-	  
- 
-if (a[i] == j)
-	    
- 
-printf ("%d\t", i);
-	  
- 
-	  else
-	    
- 
-printf ("-\t");
-	
- 
-}
-      
- 
-printf ("\n");
-    
- 
+        for (int j = 1; j <= n; j++)
+        {
+            if (positions[i] == j)
+                printf("Q\t"); // Queen is placed at this position
+            else
+                printf("-\t"); // Empty position
+        }
+        printf("\n");
+    }
 }
 
- 
-}
-
-
- 
- 
-void 
-queen (int n) 
+// Recursive function to find and print all solutions for the N-Queens problem
+void placeQueens(int n)
 {
-  
- 
-int k = 1;
-  
- 
-a[k] = 0;
-  
- 
- 
-while (k != 0)
-    
- 
+    int queenIndex = 1;
+    positions[queenIndex] = 0;
+
+    while (queenIndex != 0)
     {
-      
- 
-a[k] = a[k] + 1;
-      
- 
-while ((a[k] <= n) && !place (k))
-	
- 
-	{
-	  
- 
-a[k]++;
-	
- 
-}
-      
- 
-if (a[k] <= n)
-	
- 
-	{
-	  
- 
-if (k == n)
-	    
- 
-	    {
-	      
- 
-print_sol (n);
-	    
- 
-}
-	  
- 
-	  else
-	    
- 
-	    {
-	      
- 
-k++;
-	      
- 
-a[k] = 0;
-	    
- 
-}
-	
- 
-}
-      
- 
-      else
-	
- 
-k--;
-    
- 
+        positions[queenIndex] = positions[queenIndex] + 1;
+
+        while ((positions[queenIndex] <= n) && !isValidPosition(queenIndex))
+        {
+            positions[queenIndex]++;
+        }
+
+        if (positions[queenIndex] <= n)
+        {
+            if (queenIndex == n)
+            {
+                printSolution(n);
+            }
+            else
+            {
+                queenIndex++;
+                positions[queenIndex] = 0;
+            }
+        }
+        else
+        {
+            queenIndex--;
+        }
+    }
 }
 
- 
-}
-
-
- 
- 
-void 
-main () 
+int main()
 {
-  
- 
-int n;
-  
- 
-printf ("Enter the number of Queens\n");
-  
- 
-scanf ("%d", &n);
-  
- 
-queen (n);
+    int numQueens;
 
- 
-} 
+    printf("Enter the number of Queens: ");
+    scanf("%d", &numQueens);
+
+    placeQueens(numQueens);
+
+    return 0;
+}
