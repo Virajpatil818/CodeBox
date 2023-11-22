@@ -18,7 +18,7 @@ int main(){
 
     printf("Waiting for consumer ......\n");
     fd1 = open(FIFO_NAME1, O_WRONLY);
-    fd2 = open(FIFO_NAME1, O_RDONLY);
+    fd2 = open(FIFO_NAME2, O_RDONLY);
 
     printf("Got a consumer -- type some stuff\n");
     gets(s1);
